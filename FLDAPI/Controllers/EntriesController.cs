@@ -5,8 +5,9 @@ namespace FLDAPI.Controllers;
 [ApiController]
 [Route("[controller]")]
 public class EntriesController : ControllerBase{
-    [HttpGet("{word}")]
-    public IActionResult GetSimilarEntryWords(string word){
+    
+    [HttpGet("entries/{word}")]
+    public IActionResult GetAllEntriesForWord(string word){
         return Ok();
     }
 }

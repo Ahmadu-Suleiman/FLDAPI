@@ -1,7 +1,9 @@
-﻿namespace FLDAPI.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FLDAPI.Models;
 
 public class EntryWord{
-    public string Id{ get; } = string.Empty;
-
+    [Key]
+    public long Id{ get; set; }
     public string Word{ get; } = string.Empty;
 }

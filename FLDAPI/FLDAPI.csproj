@@ -31,7 +31,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="DTOs\"/>
+      <None Remove="README.md" />
     </ItemGroup>
 
 </Project>

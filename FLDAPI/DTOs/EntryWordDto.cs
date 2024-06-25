@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FLDAPI.Models;
+namespace FLDAPI.DTOs;
 
-public class EntryWord{
-    [Key]
-    public string Id{ get; } = string.Empty;
+public class EntryWordDto{
     public string Word{ get; } = string.Empty;
 }

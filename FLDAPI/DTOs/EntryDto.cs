@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FLDAPI.Models;
+namespace FLDAPI.DTOs;
 
-public class Entry{
-    [Key]
-    public string Id{ get; set; } = string.Empty;
+public class EntryDto{
     public string Word{ get; set; } = string.Empty;
     public string Plural{ get; set; } = string.Empty;
     public string PartOfSpeech{ get; set; } = string.Empty;
