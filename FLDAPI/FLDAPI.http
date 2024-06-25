@@ -1,0 +1,6 @@
+@FLDAPI_HostAddress = http://localhost:5298
+
+GET {{FLDAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
