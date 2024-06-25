@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
 namespace FLDAPI.Models;
 
-public class EntryWord{
-    [Key]
-    public long Id{ get; set; }
-    public string Word{ get; } = string.Empty;
+public partial class EntryWord
+{
+    public int Id { get; set; }
+
+    public string? Word { get; set; }
 }

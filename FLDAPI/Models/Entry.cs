@@ -1,19 +1,31 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
 namespace FLDAPI.Models;
 
-public class Entry{
-    [Key]
-    public long Id{ get; set; }
-    public string Word{ get; set; } = string.Empty;
-    public string Plural{ get; set; } = string.Empty;
-    public string PartOfSpeech{ get; set; } = string.Empty;
-    public string Tenses{ get; set; } = string.Empty;
-    public string Compare{ get; set; } = string.Empty;
-    public List<string> Definitions{ get; set; } = new();
-    public List<string> Synonyms{ get; set; } = new();
-    public List<string> Antonyms{ get; set; } = new();
-    public List<string> Hypernyms{ get; set; } = new();
-    public List<string> Hyponyms{ get; set; } = new();
-    public List<string> Homophones{ get; set; } = new();
+public partial class Entry
+{
+    public long Id { get; set; }
+
+    public string Word { get; set; } = null!;
+
+    public string Plural { get; set; } = null!;
+
+    public string PartOfSpeech { get; set; } = null!;
+
+    public string Tenses { get; set; } = null!;
+
+    public string Compare { get; set; } = null!;
+
+    public List<string> Definitions { get; set; } = null!;
+
+    public List<string> Synonyms { get; set; } = null!;
+
+    public List<string> Antonyms { get; set; } = null!;
+
+    public List<string> Hypernyms { get; set; } = null!;
+
+    public List<string> Hyponyms { get; set; } = null!;
+
+    public List<string> Homophones { get; set; } = null!;
 }
