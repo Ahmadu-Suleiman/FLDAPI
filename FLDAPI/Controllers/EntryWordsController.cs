@@ -1,4 +1,5 @@
-﻿using FLDAPI.Models;
+﻿using FLDAPI.DTOs;
+using FLDAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,6 @@ namespace FLDAPI.Controllers;
 public class EntryWordsController(
     DictionaryContext dictionaryContext,
     ILogger<EntryWordsController> logger) : ControllerBase{
-    
     [HttpGet("similar/{word}")]
     public async Task<IActionResult> GetSimilarEntryWords(string word){
         if (string.IsNullOrEmpty(word)){
@@ -28,7 +28,7 @@ public class EntryWordsController(
                 return NotFound("No similar entries found.");
             }
 
-            return Ok(entryWords);
+            return Ok(entryWords.ToDto());
         }
         catch (Exception ex){
             logger.LogError(ex, "An error occurred while processing your request.");
@@ -48,7 +48,7 @@ public class EntryWordsController(
                 return NotFound("Could not obtain random word");
             }
 
-            return Ok(randomEntryWord);
+            return Ok(randomEntryWord.ToDto());
         }
         catch (Exception ex){
             logger.LogError(ex, "An error occurred while processing your request.");
@@ -84,7 +84,7 @@ public class EntryWordsController(
                 return NotFound("Could not obtain preceding words.");
             }
 
-            return Ok(precedingRows);
+            return Ok(precedingRows.ToDto());
         }
         catch (Exception ex){
             logger.LogError(ex, "An error occurred while processing your request.");
@@ -120,7 +120,7 @@ public class EntryWordsController(
                 return NotFound("Could not obtain succeeding words.");
             }
 
-            return Ok(succeedingRows);
+            return Ok(succeedingRows.ToDto());
         }
         catch (Exception ex){
             logger.LogError(ex, "An error occurred while processing your request.");

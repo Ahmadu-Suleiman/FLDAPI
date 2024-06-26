@@ -1,4 +1,5 @@
-﻿using FLDAPI.Models;
+﻿using FLDAPI.DTOs;
+using FLDAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -10,7 +11,6 @@ namespace FLDAPI.Controllers;
 public class EntriesController(
     DictionaryContext dictionaryContext,
     ILogger<EntryWordsController> logger) : ControllerBase{
-
     [HttpGet("{word}")]
     public async Task<IActionResult> GetEntries(string word){
         if (string.IsNullOrEmpty(word)){
@@ -26,7 +26,7 @@ public class EntriesController(
                 return NotFound("No entries found.");
             }
 
-            return Ok(entries);
+            return Ok(entries.ToDto());
         }
         catch (Exception ex){
             logger.LogError(ex, "An error occurred while processing your request.");

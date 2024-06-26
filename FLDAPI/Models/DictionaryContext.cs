@@ -4,22 +4,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FLDAPI.Models;
 
-public partial class DictionaryContext : DbContext{
-    public DictionaryContext(){
-    }
+public partial class DictionaryContext : DbContext
+{
 
-    public DictionaryContext(DbContextOptions<DictionaryContext> options) : base(options){
-    }
+    public DictionaryContext(DbContextOptions<DictionaryContext> options, IConfiguration configuration) : base(options) { 
+        _configuration = configuration;
+        }
+
+    private readonly IConfiguration _configuration;
 
     public virtual DbSet<Entry> Entries { get; set; }
 
     public virtual DbSet<EntryWord> EntryWords { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("Host=localhost;Database=WiktionaryDatabase;Username=postgres;Password=tachyon");
+        => optionsBuilder.UseNpgsql(_configuration.GetConnectionString("DefaultConnection"));
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder){
-        modelBuilder.Entity<Entry>(entity => {
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Entry>(entity =>
+        {
             entity.HasKey(e => e.Id).HasName("entries_pkey");
 
             entity.ToTable("entries");
@@ -40,7 +44,8 @@ public partial class DictionaryContext : DbContext{
             entity.Property(e => e.Word).HasColumnName("word");
         });
 
-        modelBuilder.Entity<EntryWord>(entity => {
+        modelBuilder.Entity<EntryWord>(entity =>
+        {
             entity.HasKey(e => e.Id).HasName("entry_words_pkey");
 
             entity.ToTable("entry_words");
@@ -50,8 +55,9 @@ public partial class DictionaryContext : DbContext{
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Word).HasColumnName("word");
         });
-        
+
         OnModelCreatingPartial(modelBuilder);
     }
+
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
