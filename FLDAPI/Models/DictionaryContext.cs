@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FLDAPI.Models;
 
-public partial class WiktionaryDatabaseContext : DbContext{
-    public WiktionaryDatabaseContext(){
+public partial class DictionaryContext : DbContext{
+    public DictionaryContext(){
     }
 
-    public WiktionaryDatabaseContext(DbContextOptions<WiktionaryDatabaseContext> options) : base(options){
+    public DictionaryContext(DbContextOptions<DictionaryContext> options) : base(options){
     }
 
     public virtual DbSet<Entry> Entries { get; set; }

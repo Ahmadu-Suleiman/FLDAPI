@@ -6,8 +6,8 @@ namespace FLDAPI.Controllers;
 [Route("[controller]")]
 public class EntriesController : ControllerBase{
     
-    [HttpGet("entries/{word}")]
-    public IActionResult GetAllEntriesForWord(string word){
-        return Ok();
+    [HttpGet("{word}")]
+    public IActionResult GetEntries(string word){
+        return Ok("Apps");
     }
 }

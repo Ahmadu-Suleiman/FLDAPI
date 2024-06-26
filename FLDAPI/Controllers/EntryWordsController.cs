@@ -1,5 +1,6 @@
 ﻿using FLDAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Npgsql;
@@ -22,17 +23,16 @@ public class EntryWordsController(DictionaryContext dictionaryContext,
         }
 
         try{
-            var entryWords = await _dictionaryContext.EntryWords
-                .FromSqlRaw("SELECT entry_word FROM entry_words WHERE entry_word LIKE %I{word}% LIMIT 9", word)
-                .ToListAsync();
+            var entryWords =await _dictionaryContext.EntryWords
+                .Where(e => EF.Functions.ILike(e.Word, $"{word}%"))
+                .Take(5).ToListAsync();
 
             if (entryWords.IsNullOrEmpty()){
                 return NotFound("No similar entries found.");
             }
 
             return Ok(entryWords);
-        }
-        catch (Exception ex){
+        }catch (Exception ex){
             _logger.LogError(ex, "An error occurred while processing your request.");
             return StatusCode(500, "An error occurred while processing your request.");
         }
@@ -56,8 +56,6 @@ public class EntryWordsController(DictionaryContext dictionaryContext,
             _logger.LogError(ex, "An error occurred while processing your request.");
             return StatusCode(500, "An error occurred while processing your request.");
         }
-
-        return Ok();
     }
 
     [HttpGet("preceding/{word}")]
