@@ -3,29 +3,29 @@ using System.Collections.Generic;
 
 namespace FLDAPI.Models;
 
-public partial class Entry
+public class Entry
 {
-    public long Id { get; set; }
+    public long Id { get;  }
 
-    public string Word { get; set; } = null!;
+    public string Word { get;  } = null!;
 
-    public string Plural { get; set; } = null!;
+    public string? Plural { get;  } = null!;
 
-    public string PartOfSpeech { get; set; } = null!;
+    public string PartOfSpeech { get;  } = null!;
 
-    public string Tenses { get; set; } = null!;
+    public string? Tenses { get;  } = null!;
 
-    public string Compare { get; set; } = null!;
+    public string? Compare { get;  } = null!;
 
-    public List<string> Definitions { get; set; } = null!;
+    public string? Definitions { get;  } = null!;
 
-    public List<string> Synonyms { get; set; } = null!;
+    public string? Synonyms { get;  } = null!;
 
-    public List<string> Antonyms { get; set; } = null!;
+    public string? Antonyms { get;  } = null!;
 
-    public List<string> Hypernyms { get; set; } = null!;
+    public string? Hypernyms { get;  } = null!;
 
-    public List<string> Hyponyms { get; set; } = null!;
+    public string? Hyponyms { get;  } = null!;
 
-    public List<string> Homophones { get; set; } = null!;
+    public string? Homophones { get;  } = null!;
 }

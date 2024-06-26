@@ -2,16 +2,7 @@
 
 namespace FLDAPI.DTOs;
 
-public class EntryDto{
-    public string Word{ get; set; } = string.Empty;
-    public string Plural{ get; set; } = string.Empty;
-    public string PartOfSpeech{ get; set; } = string.Empty;
-    public string Tenses{ get; set; } = string.Empty;
-    public string Compare{ get; set; } = string.Empty;
-    public List<string> Definitions{ get; set; } = new();
-    public List<string> Synonyms{ get; set; } = new();
-    public List<string> Antonyms{ get; set; } = new();
-    public List<string> Hypernyms{ get; set; } = new();
-    public List<string> Hyponyms{ get; set; } = new();
-    public List<string> Homophones{ get; set; } = new();
-}
+public record EntryDto(String Word, String PartOfSpeech, String? Plural, List<String>? Tenses,
+    List<String>? Compare, List<String> Definitions, List<String>? Synonyms,
+    List<String>? Antonyms, List<String>? Hypernyms, List<String>? Hyponyms,
+    List<String>? Homophones) ;

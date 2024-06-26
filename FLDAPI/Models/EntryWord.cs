@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FLDAPI.Models;
 
-public partial class EntryWord
+public class EntryWord
 {
     public int Id { get; set; }
 

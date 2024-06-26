@@ -2,6 +2,4 @@
 
 namespace FLDAPI.DTOs;
 
-public class EntryWordDto{
-    public string Word{ get; } = string.Empty;
-}
+public record EntryWordDto(string Word);

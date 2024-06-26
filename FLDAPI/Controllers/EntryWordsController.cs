@@ -9,12 +9,10 @@ namespace FLDAPI.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class EntryWordsController(DictionaryContext dictionaryContext,
+public class EntryWordsController(
+    DictionaryContext dictionaryContext,
     ILogger<EntryWordsController> logger) : ControllerBase{
     
-    private readonly DictionaryContext _dictionaryContext = dictionaryContext;
-    private readonly ILogger<EntryWordsController> _logger = logger;
-
     [HttpGet("similar/{word}")]
     public async Task<IActionResult> GetSimilarEntryWords(string word){
         if (string.IsNullOrEmpty(word)){
@@ -22,7 +20,7 @@ public class EntryWordsController(DictionaryContext dictionaryContext,
         }
 
         try{
-            var entryWords =await _dictionaryContext.EntryWords
+            var entryWords = await dictionaryContext.EntryWords
                 .Where(e => EF.Functions.ILike(e.Word, $"{word}%"))
                 .Take(5).ToListAsync();
 
@@ -31,8 +29,9 @@ public class EntryWordsController(DictionaryContext dictionaryContext,
             }
 
             return Ok(entryWords);
-        }catch (Exception ex){
-            _logger.LogError(ex, "An error occurred while processing your request.");
+        }
+        catch (Exception ex){
+            logger.LogError(ex, "An error occurred while processing your request.");
             return StatusCode(500, "An error occurred while processing your request.");
         }
     }
@@ -40,7 +39,7 @@ public class EntryWordsController(DictionaryContext dictionaryContext,
     [HttpGet("random")]
     public async Task<IActionResult> GetRandomWord(){
         try{
-            var randomEntryWord = await _dictionaryContext.EntryWords
+            var randomEntryWord = await dictionaryContext.EntryWords
                 .FromSqlRaw("SELECT * FROM entry_words ORDER BY RANDOM() LIMIT 1")
                 .FirstOrDefaultAsync();
 
@@ -52,7 +51,7 @@ public class EntryWordsController(DictionaryContext dictionaryContext,
             return Ok(randomEntryWord);
         }
         catch (Exception ex){
-            _logger.LogError(ex, "An error occurred while processing your request.");
+            logger.LogError(ex, "An error occurred while processing your request.");
             return StatusCode(500, "An error occurred while processing your request.");
         }
     }
@@ -62,9 +61,9 @@ public class EntryWordsController(DictionaryContext dictionaryContext,
         if (string.IsNullOrEmpty(word)){
             return BadRequest("Word parameter cannot be empty.");
         }
-        
+
         try{
-            EntryWord? entryWord = await _dictionaryContext.EntryWords
+            EntryWord? entryWord = await dictionaryContext.EntryWords
                 .FirstOrDefaultAsync(e => e.Word.ToLower() == word.ToLower());
 
             if (entryWord == null){
@@ -77,7 +76,7 @@ public class EntryWordsController(DictionaryContext dictionaryContext,
                 ORDER BY id DESC 
                 LIMIT 10";
 
-            var precedingRows = await _dictionaryContext.EntryWords
+            var precedingRows = await dictionaryContext.EntryWords
                 .FromSqlRaw(precedingRowsQuery, new NpgsqlParameter("@Id", entryWord.Id))
                 .ToListAsync();
 
@@ -88,19 +87,19 @@ public class EntryWordsController(DictionaryContext dictionaryContext,
             return Ok(precedingRows);
         }
         catch (Exception ex){
-            _logger.LogError(ex, "An error occurred while processing your request.");
+            logger.LogError(ex, "An error occurred while processing your request.");
             return StatusCode(500, "An unexpected error occurred while processing your request.");
         }
     }
-    
+
     [HttpGet("succeeding/{word}")]
     public async Task<IActionResult> GetSucceedingWords(string word){
         if (string.IsNullOrEmpty(word)){
             return BadRequest("Word parameter cannot be empty.");
         }
-        
+
         try{
-            EntryWord? entryWord = await _dictionaryContext.EntryWords
+            EntryWord? entryWord = await dictionaryContext.EntryWords
                 .FirstOrDefaultAsync(e => e.Word.ToLower() == word.ToLower());
 
             if (entryWord == null){
@@ -113,7 +112,7 @@ public class EntryWordsController(DictionaryContext dictionaryContext,
                 ORDER BY id ASC 
                 LIMIT 10";
 
-            var succeedingRows = await _dictionaryContext.EntryWords
+            var succeedingRows = await dictionaryContext.EntryWords
                 .FromSqlRaw(succeedingRowsQuery, new NpgsqlParameter("@Id", entryWord.Id))
                 .ToListAsync();
 
@@ -124,7 +123,7 @@ public class EntryWordsController(DictionaryContext dictionaryContext,
             return Ok(succeedingRows);
         }
         catch (Exception ex){
-            _logger.LogError(ex, "An error occurred while processing your request.");
+            logger.LogError(ex, "An error occurred while processing your request.");
             return StatusCode(500, "An unexpected error occurred while processing your request.");
         }
     }
