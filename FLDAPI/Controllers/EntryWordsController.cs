@@ -17,7 +17,6 @@ public class EntryWordsController(DictionaryContext dictionaryContext,
 
     [HttpGet("similar/{word}")]
     public async Task<IActionResult> GetSimilarEntryWords(string word){
-        String w = word;
         if (string.IsNullOrEmpty(word)){
             return BadRequest("Word parameter cannot be empty.");
         }
@@ -41,7 +40,7 @@ public class EntryWordsController(DictionaryContext dictionaryContext,
     [HttpGet("random")]
     public async Task<IActionResult> GetRandomWord(){
         try{
-            EntryWord? randomEntryWord = await _dictionaryContext.EntryWords
+            var randomEntryWord = await _dictionaryContext.EntryWords
                 .FromSqlRaw("SELECT * FROM entry_words ORDER BY RANDOM() LIMIT 1")
                 .FirstOrDefaultAsync();
 
@@ -66,20 +65,20 @@ public class EntryWordsController(DictionaryContext dictionaryContext,
         
         try{
             EntryWord? entryWord = await _dictionaryContext.EntryWords
-                .FirstOrDefaultAsync(e => e.Word.Equals(word, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefaultAsync(e => e.Word.ToLower() == word.ToLower());
 
             if (entryWord == null){
                 return NotFound("Could not find the requested word.");
             }
 
             var precedingRowsQuery = @"
-            SELECT * FROM entry_words 
-            WHERE id < Id 
-            ORDER BY id DESC 
-            LIMIT 20";
+                SELECT * FROM entry_words 
+                WHERE id < @Id 
+                ORDER BY id DESC 
+                LIMIT 10";
 
             var precedingRows = await _dictionaryContext.EntryWords
-                .FromSqlRaw(precedingRowsQuery, new NpgsqlParameter("Id", entryWord.Id))
+                .FromSqlRaw(precedingRowsQuery, new NpgsqlParameter("@Id", entryWord.Id))
                 .ToListAsync();
 
             if (precedingRows.Count == 0){
@@ -102,20 +101,20 @@ public class EntryWordsController(DictionaryContext dictionaryContext,
         
         try{
             EntryWord? entryWord = await _dictionaryContext.EntryWords
-                .FirstOrDefaultAsync(e => e.Word.Equals(word, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefaultAsync(e => e.Word.ToLower() == word.ToLower());
 
             if (entryWord == null){
                 return NotFound("Could not find the requested word.");
             }
 
-            var precedingRowsQuery = @"
-            SELECT * FROM entry_words 
-            WHERE id > Id 
-            ORDER BY id DESC 
-            LIMIT 20";
+            var succeedingRowsQuery = @"
+                SELECT * FROM entry_words 
+                WHERE id > @Id 
+                ORDER BY id ASC 
+                LIMIT 10";
 
             var succeedingRows = await _dictionaryContext.EntryWords
-                .FromSqlRaw(precedingRowsQuery, new NpgsqlParameter("Id", entryWord.Id))
+                .FromSqlRaw(succeedingRowsQuery, new NpgsqlParameter("@Id", entryWord.Id))
                 .ToListAsync();
 
             if (succeedingRows.Count == 0){
